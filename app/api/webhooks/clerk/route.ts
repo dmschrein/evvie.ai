@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
-import { clerkClient } from "@clerk/nextjs/server";
-import { WebhookEvent } from "@clerk/nextjs/server";
+import { clerkClient, WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { Webhook } from "svix";
@@ -12,6 +11,7 @@ export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
+    console.error("WEBHOOK_SECRET is not defined in the environment.");
     throw new Error(
       "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
     );
@@ -64,11 +64,13 @@ export async function POST(req: Request) {
     const user = {
       clerkId: id,
       email: email_addresses[0].email_address,
-      username: username! || "",
+      username: username!,
       firstName: first_name || "",
       lastName: last_name || "",
       photo: image_url,
     };
+
+    console.log(user)
 
     const newUser = await createUser(user);
 

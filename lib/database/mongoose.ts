@@ -18,10 +18,13 @@ if(!cached) {
 export const connectToDatabase = async () => {
   if(cached.conn) return cached.conn;
 
-  if(!MONGODB_URL) throw new Error('Missing MONGODB_URL');
-
+  if(!MONGODB_URL) {
+    console.error('Missing MONGODB_URL');
+    throw new Error('Missing MONGODB_URL');
+  }
+  console.log("Creating new mongoose connection promise");
   cached.promise = cached.promise || mongoose.connect(MONGODB_URL, {
-    dbName: 'evvie.ai', bufferCommands: false
+    dbName: 'evvie', bufferCommands: false
   })
 
   cached.conn = await cached.promise;
