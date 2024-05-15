@@ -24,7 +24,7 @@ export const connectToDatabase = async () => {
   }
   console.log("Creating new mongoose connection promise");
   cached.promise = cached.promise || mongoose.connect(MONGODB_URL, {
-    dbName: 'evvie', bufferCommands: false
+    dbName: 'evvieai', bufferCommands: false
   })
 
   cached.conn = await cached.promise;
